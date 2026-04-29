@@ -60,6 +60,9 @@ jobs:
             set -e
             cd ~/deploy/stydu4
             docker compose pull frontend
-            docker compose up -d frontend
+            # --force-recreate so a new image with the same :latest tag actually
+            # replaces the running container (compose otherwise treats unchanged
+            # config as "no work to do" and leaves the old container running).
+            docker compose up -d --force-recreate frontend
             docker image prune -f
             docker compose ps frontend
