@@ -1,4 +1,5 @@
 import apiClient from './api';
+import { API_BASE_URL } from '../config/env';
 
 export const authService = {
   // Login with email and password
@@ -36,7 +37,7 @@ export const authService = {
 
   // Google OAuth2 login
   googleLogin: () => {
-    window.location.href = `${import.meta.env.VITE_API_BASE_URL}/oauth2/authorization/google`;
+    window.location.href = `${API_BASE_URL}/oauth2/authorization/google`;
   },
 };
 
