@@ -14,4 +14,13 @@ export default defineConfig({
       },
     },
   },
+  esbuild: {
+    // Strip console.log/info/debug AND debugger statements from production
+    // builds so they don't leak request URLs / payloads in the browser console.
+    // console.warn / console.error are kept on purpose — those are real signals
+    // we want to see in prod (e.g. via a logging service later).
+    // Only applied when running `vite build`; `vite dev` keeps everything.
+    drop: ['debugger'],
+    pure: ['console.log', 'console.info', 'console.debug', 'console.trace'],
+  },
 })
