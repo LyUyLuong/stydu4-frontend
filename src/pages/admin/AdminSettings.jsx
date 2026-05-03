@@ -13,7 +13,7 @@ const AdminSettings = () => {
   
   // Footer contact settings
   const [footerSettings, setFooterSettings] = useState({
-    companyName: 'Stydu4 TOEIC Learning Platform',
+    companyName: 'Stydu4 Learning Platform',
     description: 'Professional TOEIC test preparation platform with comprehensive learning materials and practice tests.',
     email: 'contact@stydu4.com',
     phone: '+1 234 567 8900',

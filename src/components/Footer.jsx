@@ -3,8 +3,8 @@ import { Mail, Phone, MapPin, Globe, Facebook, Twitter, Instagram, Linkedin, Clo
 
 const Footer = () => {
   const [settings, setSettings] = useState({
-    companyName: 'Stydu4 TOEIC Learning Platform',
-    description: 'Professional TOEIC test preparation platform with comprehensive learning materials and practice tests.',
+    companyName: 'Stydu4 Learning Platform',
+    description: 'Professional test preparation platform with comprehensive learning materials and practice tests.',
     email: 'contact@stydu4.com',
     phone: '+1 234 567 8900',
     address: '123 Education Street, Learning City, LC 12345',
