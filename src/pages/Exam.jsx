@@ -362,6 +362,13 @@ function Exam() {
     }
   };
 
+  // Helper: extract question number from name (e.g. "Q7" -> "7", "Q32" -> "32")
+  const getDisplayNumber = (name) => {
+    if (!name) return '?';
+    const match = name.match(/(\d+)/);
+    return match ? match[1] : '?';
+  };
+
   // Render entire part at once
   const renderContent = () => {
     const part = getCurrentPart();
@@ -378,7 +385,15 @@ function Exam() {
             <div key={group.id || groupIndex} className="border-b pb-8 last:border-b-0">
               <div className="mb-6 bg-blue-50 px-4 py-2 rounded-lg">
                 <p className="font-semibold text-blue-900">
-                  Questions {groupIndex === 0 ? '1' : ''}-{groupIndex + 1}
+                  {(() => {
+                    const nums = (group.questions || []).map(q => {
+                      const m = q.name?.match(/(\d+)/);
+                      return m ? parseInt(m[1]) : null;
+                    }).filter(n => n !== null).sort((a, b) => a - b);
+                    if (nums.length > 1) return `Questions ${nums[0]} - ${nums[nums.length - 1]}`;
+                    if (nums.length === 1) return `Question ${nums[0]}`;
+                    return `Question Group ${groupIndex + 1}`;
+                  })()}
                   {group.questions?.length > 0 && ` (${group.questions.length} questions)`}
                 </p>
               </div>
@@ -394,7 +409,7 @@ function Exam() {
           part.questions && part.questions.map((question, questionIndex) => (
             <div key={question.id} className="border-b pb-8 last:border-b-0">
               <div className="mb-6 bg-blue-50 px-4 py-2 rounded-lg">
-                <p className="font-semibold text-blue-900">Question {questionIndex + 1}</p>
+                <p className="font-semibold text-blue-900">Question {getDisplayNumber(question.name)}</p>
               </div>
               
               {partType === 'part1' 
@@ -508,7 +523,7 @@ function Exam() {
             {/* Question Content */}
             <div className="mb-4">
               <p className="text-lg font-semibold text-gray-900 mb-2">
-                {qIndex + 1}. {question.content}
+                {getDisplayNumber(question.name)}. {question.content}
               </p>
             </div>
 
@@ -569,7 +584,7 @@ function Exam() {
             {/* Question Content */}
             <div className="mb-4">
               <p className="text-lg font-semibold text-gray-900 mb-2">
-                {qIndex + 1}. {question.content}
+                {getDisplayNumber(question.name)}. {question.content}
               </p>
             </div>
 

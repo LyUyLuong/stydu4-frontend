@@ -117,9 +117,8 @@ function MyResults() {
 
     // Sort
     if (sortBy === 'date') {
-      filtered = [...filtered].sort((a, b) =>
-        new Date(b.completeTime) - new Date(a.completeTime)
-      );
+      // Backend already returns results sorted by createdDate DESC
+      // No additional sort needed
     } else if (sortBy === 'score') {
       filtered = [...filtered].sort((a, b) => {
         const scoreA = getPercentage(a.totalCorrectAnswers, a.totalQuestions);
@@ -348,7 +347,17 @@ function MyResults() {
                               <div className="flex-1">
                                 <div className="flex items-center gap-2 mb-1">
                                   <span className="text-sm text-gray-600">
-                                    {new Date(result.completeTime).toLocaleString('vi-VN')}
+                                    Thời gian: {(() => {
+                                      const ct = result.completeTime;
+                                      if (!ct) return 'N/A';
+                                      const m = ct.match(/^(\d+)s$/);
+                                      if (!m) return ct;
+                                      const total = parseInt(m[1]);
+                                      const mins = Math.floor(total / 60);
+                                      const secs = total % 60;
+                                      if (mins > 0) return `${mins} phút ${secs > 0 ? secs + ' giây' : ''}`;
+                                      return `${secs} giây`;
+                                    })()}
                                   </span>
                                   {isIelts && (
                                     <span className="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">
