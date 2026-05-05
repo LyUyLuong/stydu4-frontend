@@ -104,10 +104,10 @@ function Exam() {
             part.questions.sort((a, b) => {
               const getQuestionNumber = (questionName) => {
                 if (!questionName) return 999;
-                const match = questionName.match(/question\s*(\d+)/i);
+                const match = questionName.match(/(\d+)/);
                 return match ? parseInt(match[1]) : 999;
               };
-              return getQuestionNumber(a.questionName) - getQuestionNumber(b.questionName);
+              return getQuestionNumber(a.name) - getQuestionNumber(b.name);
             });
             
             // Sort answers by mark (A, B, C, D) for each question
@@ -140,10 +140,10 @@ function Exam() {
                 group.questions.sort((a, b) => {
                   const getQuestionNumber = (questionName) => {
                     if (!questionName) return 999;
-                    const match = questionName.match(/question\s*(\d+)/i);
+                    const match = questionName.match(/(\d+)/);
                     return match ? parseInt(match[1]) : 999;
                   };
-                  return getQuestionNumber(a.questionName) - getQuestionNumber(b.questionName);
+                  return getQuestionNumber(a.name) - getQuestionNumber(b.name);
                 });
                 
                 // Sort answers for each question

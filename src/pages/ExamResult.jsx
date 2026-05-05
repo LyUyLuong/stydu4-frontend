@@ -134,7 +134,7 @@ function ExamResult() {
     return match ? parseInt(match[1]) : 999;
   };
 
-  // Sort questions by part number, then by question number within each part
+  // Sort questions by part number, preserve backend order within each part
   const getSortedQuestions = (questions) => {
     if (!questions || questions.length === 0) return [];
     
@@ -148,22 +148,10 @@ function ExamResult() {
       partMap.get(partNum).push({ ...question, originalIndex });
     });
     
-    // Sort parts by part number
+    // Sort parts by part number, keep question order from backend (already sorted)
     const sortedParts = Array.from(partMap.entries()).sort((a, b) => a[0] - b[0]);
     
-    // Sort questions within each part by question number, then flatten
-    const sortedQuestions = sortedParts.flatMap(([partNum, partQuestions]) => {
-      return partQuestions.sort((a, b) => {
-        const getQNum = (content) => {
-          if (!content) return 999;
-          const match = content.match(/question\s*(\d+)/i);
-          return match ? parseInt(match[1]) : 999;
-        };
-        return getQNum(a.questionContent) - getQNum(b.questionContent);
-      });
-    });
-    
-    return sortedQuestions;
+    return sortedParts.flatMap(([_, partQuestions]) => partQuestions);
   };
 
   // Check if any question has review data (explanation, vocabulary, or grammar)
