@@ -30,7 +30,17 @@ function TestDetail() {
       ]);
 
       setTest(testResponse.result);
-      setParts(partsResponse.result?.data || []);
+      // Sort parts by part number (e.g. "Part 1", "Part 2", ...)
+      const rawParts = partsResponse.result?.data || [];
+      rawParts.sort((a, b) => {
+        const getNum = (name) => {
+          if (!name) return 999;
+          const m = name.match(/part\s*(\d+)/i);
+          return m ? parseInt(m[1]) : 999;
+        };
+        return getNum(a.name) - getNum(b.name);
+      });
+      setParts(rawParts);
     } catch (error) {
       toast.error('Failed to load test details');
       console.error('Error loading test:', error);

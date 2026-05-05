@@ -134,7 +134,7 @@ function ExamResult() {
     return match ? parseInt(match[1]) : 999;
   };
 
-  // Sort questions by part number
+  // Sort questions by part number, then by question number within each part
   const getSortedQuestions = (questions) => {
     if (!questions || questions.length === 0) return [];
     
@@ -151,8 +151,17 @@ function ExamResult() {
     // Sort parts by part number
     const sortedParts = Array.from(partMap.entries()).sort((a, b) => a[0] - b[0]);
     
-    // Flatten the sorted parts back into a single array
-    const sortedQuestions = sortedParts.flatMap(([partNum, questions]) => questions);
+    // Sort questions within each part by question number, then flatten
+    const sortedQuestions = sortedParts.flatMap(([partNum, partQuestions]) => {
+      return partQuestions.sort((a, b) => {
+        const getQNum = (content) => {
+          if (!content) return 999;
+          const match = content.match(/question\s*(\d+)/i);
+          return match ? parseInt(match[1]) : 999;
+        };
+        return getQNum(a.questionContent) - getQNum(b.questionContent);
+      });
+    });
     
     return sortedQuestions;
   };
